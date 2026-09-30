@@ -135,10 +135,19 @@ h1.title {
         10px 10px 0px #000;
 }
 
-#videoFeed, #resultImage {
+#videoFeed {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    image-rendering: pixelated;
+}
+
+#resultImage {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
     image-rendering: pixelated;
 }
 

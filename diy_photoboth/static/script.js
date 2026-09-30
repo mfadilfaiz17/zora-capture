@@ -123,14 +123,36 @@ async function startCamera() {
     }
 
     if (!navigator.mediaDevices?.getUserMedia) {
-        throw new Error('Browser tidak mendukung akses kamera.');
+        throw new Error('Kamera membutuhkan HTTPS atau localhost.');
     }
 
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
+    const cameraConstraints = {
+        video: {
+            facingMode: { ideal: 'user' },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+        },
         audio: false
-    });
+    };
+
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia(cameraConstraints);
+    } catch (error) {
+        if (error.name !== 'OverconstrainedError' && error.name !== 'NotFoundError') {
+            throw new Error('Izin kamera ditolak atau kamera sedang digunakan.');
+        }
+        cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    }
+
     videoFeed.srcObject = cameraStream;
+    videoFeed.setAttribute('playsinline', '');
+    await new Promise(resolve => {
+        if (videoFeed.readyState >= 1) {
+            resolve();
+        } else {
+            videoFeed.addEventListener('loadedmetadata', resolve, { once: true });
+        }
+    });
     await videoFeed.play();
 }
 

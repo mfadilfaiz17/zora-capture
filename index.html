@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>PIXEL PHOTOBOOTH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="diy_photoboth/static/style.css">
+</head>
+<body data-mode="static">
+    <main class="pixel-container">
+        <header>
+            <h1 class="title">PIXEL PHOTOBOOTH</h1>
+            <p>CAPTURE YOUR MOMENT IN 8-BIT</p>
+        </header>
+
+        <section class="controls" aria-label="Pengaturan photobooth">
+            <label for="modeSelect">JUMLAH FOTO:</label>
+            <div class="mode-picker">
+                <select id="modeSelect" class="mode-select-hidden" tabindex="-1" aria-hidden="true">
+                    <option value="4">4 FOTO</option>
+                    <option value="6">6 FOTO</option>
+                </select>
+                <button id="modePickerBtn" class="pixel-btn mode-picker-btn" type="button" aria-haspopup="listbox" aria-expanded="false">4 FOTO</button>
+                <div id="modeMenu" class="mode-menu hidden" role="listbox" aria-label="Jumlah foto">
+                    <button class="mode-option" type="button" role="option" data-value="4">4 FOTO</button>
+                    <button class="mode-option" type="button" role="option" data-value="6">6 FOTO</button>
+                </div>
+            </div>
+            <button id="startBtn" class="pixel-btn" type="button">START PHOTO</button>
+        </section>
+
+        <section class="booth-monitor" aria-label="Monitor kamera">
+            <video id="videoFeed" autoplay muted playsinline aria-label="Live feed kamera"></video>
+            <canvas id="captureCanvas" class="hidden" width="640" height="480"></canvas>
+            <div id="countdown" class="hidden" aria-live="assertive"></div>
+            <div id="flash" aria-hidden="true"></div>
+        </section>
+
+        <section id="resultContainer" class="hidden" aria-live="polite">
+            <h2>PHOTO COLLAGE READY!</h2>
+            <img id="resultImage" src="" alt="Hasil kolase foto">
+            <div class="frame-controls">
+                <p class="frame-label">FRAME DARI FOLDER FRAMES</p>
+                <div id="folderFrames" class="template-grid" role="group" aria-label="Frame dari folder"></div>
+                <label class="upload-frame" for="customFrameInput">UPLOAD FRAME CUSTOM</label>
+                <input id="customFrameInput" type="file" accept="image/png,image/jpeg,image/jfif,image/webp">
+                <img id="framePreview" class="frame-preview hidden" alt="Preview frame custom">
+                <button id="applyFrameBtn" class="pixel-btn" type="button">PAKAI FRAME CUSTOM</button>
+            </div>
+            <div>
+                <a id="downloadBtn" class="pixel-btn" href="#" download="pixel-photobooth.jpg">DOWNLOAD</a>
+                <button id="retakeBtn" class="pixel-btn" type="button">RETAKE</button>
+            </div>
+        </section>
+
+        <p id="statusText" aria-live="polite">TAKE YOUR MOMENT! 0__0</p>
+    </main>
+
+    <script src="diy_photoboth/static/script.js"></script>
+</body>
+</html>

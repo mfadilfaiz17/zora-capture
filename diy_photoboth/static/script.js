@@ -158,10 +158,37 @@ async function startCamera() {
 
 function captureStaticFrame() {
     const context = captureCanvas.getContext('2d');
+    const sourceWidth = videoFeed.videoWidth || captureCanvas.width;
+    const sourceHeight = videoFeed.videoHeight || captureCanvas.height;
+    const sourceRatio = sourceWidth / sourceHeight;
+    const targetRatio = captureCanvas.width / captureCanvas.height;
+    let cropWidth = sourceWidth;
+    let cropHeight = sourceHeight;
+    let cropX = 0;
+    let cropY = 0;
+
+    if (sourceRatio > targetRatio) {
+        cropWidth = sourceHeight * targetRatio;
+        cropX = (sourceWidth - cropWidth) / 2;
+    } else if (sourceRatio < targetRatio) {
+        cropHeight = sourceWidth / targetRatio;
+        cropY = (sourceHeight - cropHeight) / 2;
+    }
+
     context.save();
     context.translate(captureCanvas.width, 0);
     context.scale(-1, 1);
-    context.drawImage(videoFeed, 0, 0, captureCanvas.width, captureCanvas.height);
+    context.drawImage(
+        videoFeed,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        0,
+        0,
+        captureCanvas.width,
+        captureCanvas.height
+    );
     context.restore();
     capturedFrames.push(captureCanvas.toDataURL('image/jpeg', 0.9));
 }

@@ -1,29 +1,145 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #1a1a1a;
     color: #ffffff;
     font-family: 'Press Start 2P', monospace;
     text-align: center;
     margin: 0;
-    padding: 20px;
+    min-width: 320px;
+    min-height: 100vh;
+    padding: 0;
     /* Efek garis CRT TV */
     background-image: linear-gradient(rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.4) 50%);
     background-size: 100% 4px;
 }
 
 .pixel-container {
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
     background: #2b2b2b;
-    padding: 30px;
+    padding: clamp(18px, 4vw, 42px) clamp(14px, 5vw, 72px);
     border: 6px solid #fff;
     /* Bayangan luar yang tegas */
     box-shadow: 10px 10px 0px #000;
 }
 
+.site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 18px;
+    width: 100%;
+    margin: 0 auto 34px;
+    border-bottom: 4px solid #555;
+    padding-bottom: 16px;
+}
+
+.nav-link {
+    color: #fff;
+    font-size: clamp(10px, 1.1vw, 14px);
+    text-decoration: none;
+    padding: 6px 4px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #ffcc00;
+    text-shadow: 2px 2px 0 #ff0000;
+}
+
+.landing-screen {
+    min-height: calc(100vh - 150px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.landing-screen::before,
+.landing-screen::after {
+    content: '';
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border: 6px solid #00ff00;
+    opacity: 0.5;
+    animation: pixelFloat 3s steps(4, end) infinite;
+}
+
+.landing-screen::before { top: 12%; left: 8%; }
+.landing-screen::after { right: 8%; bottom: 18%; border-color: #ff00aa; animation-delay: -1.5s; }
+
+.pixel-sparkles {
+    color: #ffcc00;
+    font-size: 18px;
+    letter-spacing: 4px;
+    animation: blinkPixel 1.2s steps(2, end) infinite;
+}
+
+.eyebrow,
+.landing-hint,
+.card-label {
+    font-size: clamp(9px, 1vw, 12px);
+    letter-spacing: 1px;
+}
+
+.eyebrow { color: #00ff00; margin: 18px 0; }
+
+.landing-header { animation: landingIn 0.8s steps(5, end) both; }
+.landing-header .title { font-size: clamp(24px, 6vw, 42px); margin: 12px 0 18px; }
+.landing-header > p:not(.pixel-camera) { color: #ffcc00; font-size: clamp(10px, 1.2vw, 14px); }
+.pixel-camera { font-size: 46px; color: #ff00aa; margin: 0; text-shadow: 5px 5px 0 #000; }
+
+.landing-card {
+    border: 4px solid #fff;
+    background: #185abd;
+    padding: 16px 26px;
+    margin: 28px 0 20px;
+    box-shadow: 7px 7px 0 #000;
+    line-height: 1.8;
+    animation: landingIn 0.8s steps(5, end) 0.25s both;
+}
+
+.card-label { color: #ffcc00; }
+.start-landing-btn { background: #ff00aa; color: #fff; font-size: 16px; margin: 10px 0 18px; animation: buttonPulse 1.6s steps(2, end) infinite; }
+.landing-hint { color: #c0c0c0; }
+.info-panel { min-height: calc(100vh - 150px); padding: 20px 8px; }
+.panel-title { color: #ffcc00; text-shadow: 4px 4px 0 #ff0000; }
+.info-copy { max-width: 590px; margin: 40px auto; border: 4px solid #fff; padding: 24px; text-align: left; line-height: 1.8; box-shadow: 7px 7px 0 #000; }
+.info-copy h2 { color: #00ff00; font-size: clamp(11px, 1.2vw, 15px); line-height: 1.6; }
+.info-copy p { font-size: clamp(11px, 1.15vw, 15px); }
+.info-copy a { color: #ffcc00; }
+
+@keyframes landingIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blinkPixel { 50% { opacity: 0.25; } }
+@keyframes buttonPulse { 50% { transform: scale(1.04); } }
+@keyframes pixelFloat { 50% { transform: translate(8px, -8px); } }
+
 h1.title {
     color: #ffcc00;
     text-shadow: 4px 4px 0px #ff0000;
-    margin-bottom: 30px;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.35;
+    margin: 0 0 24px;
+}
+
+.booth-app > header p {
+    font-size: clamp(11px, 1.3vw, 16px);
+    line-height: 1.6;
+}
+
+.controls {
+    margin: 24px auto 30px;
+}
+
+.controls > label {
+    font-size: clamp(11px, 1.2vw, 15px);
 }
 
 /* =========================================
@@ -126,8 +242,9 @@ h1.title {
 .booth-monitor {
     position: relative;
     margin: 20px auto;
-    width: 640px;
-    height: 480px;
+    width: min(78vw, 820px);
+    height: auto;
+    aspect-ratio: 4 / 3;
     border: 8px solid #444;
     background-color: #000;
     box-shadow: 
@@ -144,9 +261,10 @@ h1.title {
 
 #resultImage {
     display: block;
-    width: 100%;
+    width: min(100%, 760px);
     height: auto;
-    max-width: 100%;
+    max-height: 72vh;
+    margin: 0 auto;
     object-fit: contain;
     image-rendering: pixelated;
 }
@@ -161,7 +279,17 @@ h1.title {
     gap: 10px;
     justify-items: center;
     margin: 24px auto;
-    max-width: 560px;
+    max-width: 760px;
+}
+
+#resultContainer {
+    width: min(100%, 900px);
+    margin: 0 auto;
+}
+
+#resultContainer > h2 {
+    font-size: clamp(16px, 2vw, 24px);
+    line-height: 1.5;
 }
 
 .frame-label {
@@ -251,19 +379,55 @@ body[data-mode="static"] #videoFeed {
 
 @media (max-width: 700px) {
     body {
-        padding: 10px;
+        font-size: 12px;
     }
 
     .pixel-container {
-        padding: 18px 10px;
+        min-height: 100vh;
+        padding: 16px 10px 24px;
         border-width: 4px;
-        box-shadow: 6px 6px 0 #000;
+        box-shadow: none;
+    }
+
+    .site-nav {
+        gap: 5px 8px;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+    }
+    .nav-link { font-size: 8px; }
+    .landing-screen, .info-panel { min-height: calc(100vh - 105px); }
+    .landing-screen { padding: 10px 0; }
+    .landing-screen::before,
+    .landing-screen::after { width: 52px; height: 52px; border-width: 4px; }
+    .pixel-sparkles { font-size: 13px; }
+    .eyebrow, .landing-hint, .card-label { font-size: 8px; }
+    .landing-header .title { font-size: clamp(20px, 8vw, 32px); }
+    .landing-header > p:not(.pixel-camera) { font-size: 8px; }
+    .pixel-camera { font-size: 36px; }
+    .landing-card { padding: 12px 16px; }
+    .info-copy { width: 100%; margin: 24px auto; padding: 14px; }
+    .info-copy h2 { font-size: 10px; }
+    .info-copy p { font-size: 9px; }
+
+    h1.title {
+        font-size: clamp(22px, 8vw, 34px);
+        margin-bottom: 18px;
+    }
+
+    .booth-app > header p {
+        font-size: 9px;
+    }
+
+    .controls {
+        margin: 18px auto 22px;
+    }
+
+    .controls > label {
+        font-size: 10px;
     }
 
     .booth-monitor {
-        width: min(640px, calc(100vw - 58px));
-        height: auto;
-        aspect-ratio: 4 / 3;
+        width: 100%;
         border-width: 5px;
         box-shadow: inset 4px 4px 0 #111, 6px 6px 0 #000;
     }
@@ -273,9 +437,9 @@ body[data-mode="static"] #videoFeed {
     }
 
     #resultImage {
-        width: 100%;
+        width: min(100%, 560px);
         height: auto;
-        max-height: none;
+        max-height: 62vh;
         object-fit: contain;
         aspect-ratio: auto;
         box-sizing: border-box;
@@ -284,6 +448,7 @@ body[data-mode="static"] #videoFeed {
     .pixel-btn {
         font-size: 10px;
         padding: 12px 10px;
+        max-width: 100%;
     }
 
     #countdown {
@@ -292,5 +457,47 @@ body[data-mode="static"] #videoFeed {
 
     #statusText {
         font-size: 10px;
+    }
+
+    #resultContainer > h2 {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 420px) {
+    .site-nav {
+        justify-content: space-between;
+    }
+
+    .nav-link {
+        font-size: 7px;
+        padding: 5px 1px;
+    }
+
+    .controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .controls > label {
+        width: 100%;
+        margin-bottom: 4px;
+    }
+
+    .mode-picker-btn,
+    .controls > .pixel-btn {
+        margin: 6px 4px;
+    }
+
+    #countdown {
+        font-size: 48px;
+    }
+
+    .frame-controls > div:last-child {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

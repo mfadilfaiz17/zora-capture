@@ -5,11 +5,12 @@ import time
 from PIL import Image, ImageOps
 
 app = Flask(__name__, template_folder='..')
+static_directory = os.path.join(app.root_path, 'static')
 frames_directory = os.path.join(app.root_path, 'frames')
 
 # Buat folder jika belum ada
-os.makedirs('static/results', exist_ok=True)
-os.makedirs('frames', exist_ok=True)
+os.makedirs(os.path.join(static_directory, 'results'), exist_ok=True)
+os.makedirs(frames_directory, exist_ok=True)
 
 camera = cv2.VideoCapture(0)
 latest_frame = None
@@ -32,6 +33,16 @@ def generate_frames():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/diy_photoboth/static/<path:filename>')
+def local_static_file(filename):
+    """Serve the same asset path used by the Netlify static deployment."""
+    return send_from_directory(static_directory, filename)
+
+@app.route('/diy_photoboth/frames/<path:filename>')
+def local_frame_file(filename):
+    """Serve the same frame path used by the Netlify static deployment."""
+    return send_from_directory(frames_directory, filename)
 
 @app.route('/video_feed')
 def video_feed():
@@ -111,11 +122,11 @@ def generate(mode):
 
     # Simpan hasil
     filename = f"result_{int(time.time())}.jpg"
-    filepath = f"static/results/{filename}"
+    filepath = os.path.join(static_directory, 'results', filename)
     bg.save(filepath)
     
     captured_images = []
-    return jsonify({"status": "success", "image_url": f"/static/results/{filename}"})
+    return jsonify({"status": "success", "image_url": f"/diy_photoboth/static/results/{filename}"})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

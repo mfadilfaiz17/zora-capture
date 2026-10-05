@@ -18,6 +18,10 @@ const applyFrameBtn = document.getElementById('applyFrameBtn');
 const framePreview = document.getElementById('framePreview');
 const folderFrames = document.getElementById('folderFrames');
 const captureCanvas = document.getElementById('captureCanvas');
+const enterBoothBtn = document.getElementById('enterBoothBtn');
+const boothApp = document.getElementById('boothApp');
+const navLinks = document.querySelectorAll('.nav-link');
+const infoPanels = document.querySelectorAll('[data-panel-content]');
 const isStaticMode = document.body.dataset.mode === 'static';
 let cameraStream = null;
 let capturedFrames = [];
@@ -218,10 +222,40 @@ async function generateStaticCollage(mode) {
     return collageCanvas.toDataURL('image/jpeg', 0.92);
 }
 
-if (isStaticMode) {
-    startCamera().catch(error => {
-        statusText.innerText = `ERROR: ${error.message}`;
+function showPanel(panelName) {
+    infoPanels.forEach(panel => {
+        panel.classList.toggle('hidden', panel.dataset.panelContent !== panelName);
     });
+    navLinks.forEach(link => {
+        link.classList.toggle('active', link.dataset.panel === panelName);
+    });
+    boothApp.classList.add('hidden');
+}
+
+navLinks.forEach(link => {
+    link.addEventListener('click', event => {
+        event.preventDefault();
+        showPanel(link.dataset.panel);
+        window.history.replaceState(null, '', `#${link.dataset.panel}`);
+    });
+});
+
+enterBoothBtn.addEventListener('click', async () => {
+    infoPanels.forEach(panel => panel.classList.add('hidden'));
+    boothApp.classList.remove('hidden');
+    navLinks.forEach(link => link.classList.remove('active'));
+    try {
+        if (isStaticMode && !cameraStream) {
+            await startCamera();
+        }
+    } catch (error) {
+        statusText.innerText = `ERROR: ${error.message}`;
+    }
+});
+
+const initialPanel = window.location.hash.slice(1);
+if (['faq', 'privacy', 'contact'].includes(initialPanel)) {
+    showPanel(initialPanel);
 }
 
 startBtn.addEventListener('click', async () => {

@@ -12,6 +12,61 @@
 </head>
 <body data-mode="static">
     <main class="pixel-container">
+        <nav class="site-nav" aria-label="Navigasi utama">
+            <a class="nav-link active" href="#home" data-panel="home">HOME</a>
+            <a class="nav-link" href="#faq" data-panel="faq">FAQ</a>
+            <a class="nav-link" href="#privacy" data-panel="privacy">PRIVACY POLICY</a>
+            <a class="nav-link" href="#contact" data-panel="contact">CONTACT</a>
+        </nav>
+
+        <section id="homePanel" class="landing-screen info-panel" data-panel-content="home">
+            <div class="pixel-sparkles" aria-hidden="true">✦　｡　✦　｡　✦</div>
+            <p class="eyebrow">EST. 198X // INSERT COIN</p>
+            <header class="landing-header">
+                <p class="pixel-camera" aria-hidden="true">▣</p>
+                <h1 class="title">PIXEL CAPTURE</h1>
+                <p class="landing-tagline">YOUR MOMENT, OUR 8-BIT MAGIC</p>
+            </header>
+            <div class="landing-card">
+                <span class="card-label">READY PLAYER ONE?</span>
+                <p>MAKE A MEMORY.<br>FRAME IT FOREVER.</p>
+            </div>
+            <button id="enterBoothBtn" class="pixel-btn start-landing-btn" type="button">
+                <span aria-hidden="true">▶</span> START
+            </button>
+            <p class="landing-hint">PRESS START TO ENTER THE PHOTO BOOTH</p>
+        </section>
+
+        <section class="info-panel hidden" data-panel-content="faq">
+            <p class="eyebrow">HELP // PLAYER GUIDE</p>
+            <h1 class="panel-title">FAQ</h1>
+            <div class="info-copy">
+                <h2>HOW DOES IT WORK?</h2>
+                <p>Pilih jumlah foto, tekan START PHOTO, lalu ikuti hitungan mundur untuk membuat kolase pixel-mu.</p>
+                <h2>WHY DOES THE CAMERA NOT OPEN?</h2>
+                <p>Izinkan akses kamera di browser dan buka website melalui localhost atau koneksi HTTPS.</p>
+            </div>
+        </section>
+
+        <section class="info-panel hidden" data-panel-content="privacy">
+            <p class="eyebrow">SYSTEM // DATA PROTOCOL</p>
+            <h1 class="panel-title">PRIVACY POLICY</h1>
+            <div class="info-copy">
+                <p>PIXEL CAPTURE memproses foto langsung di perangkatmu. Foto tidak dikirim ke server saat menggunakan mode kamera browser.</p>
+                <p>Kamu memegang kendali penuh atas hasil foto dan dapat menghapusnya dengan menutup halaman ini.</p>
+            </div>
+        </section>
+
+        <section class="info-panel hidden" data-panel-content="contact">
+            <p class="eyebrow">COMMS // OPEN CHANNEL</p>
+            <h1 class="panel-title">CONTACT</h1>
+            <div class="info-copy">
+                <p>Punya ide frame baru atau menemukan bug di dunia 8-bit?</p>
+                <p class="contact-line">EMAIL: <a href="mailto:hello@pixelcapture.local">HELLO@PIXELCAPTURE.LOCAL</a></p>
+            </div>
+        </section>
+
+        <section id="boothApp" class="booth-app hidden">
         <header>
             <h1 class="title">PIXEL CAPTURE</h1>
             <p>CAPTURE YOUR MOMENT IN 8-BIT</p>
@@ -58,6 +113,7 @@
         </section>
 
         <p id="statusText" aria-live="polite">TAKE YOUR MOMENT! 0__0</p>
+        </section>
     </main>
 
     <script src="diy_photoboth/static/script.js"></script>

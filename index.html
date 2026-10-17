@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +11,27 @@
     <link rel="stylesheet" href="diy_photoboth/static/style.css">
 </head>
 <body data-mode="static">
-    <main class="pixel-container">
-        <nav class="site-nav" aria-label="Navigasi utama">
+    <a class="skip-link" href="#main-content">SKIP TO MAIN CONTENT</a>
+    <main id="main-content" class="pixel-container">
+        <nav class="site-nav" aria-label="Main navigation">
             <a class="nav-link active" href="#home" data-panel="home">HOME</a>
             <a class="nav-link" href="#faq" data-panel="faq">FAQ</a>
             <a class="nav-link" href="#privacy" data-panel="privacy">PRIVACY POLICY</a>
             <a class="nav-link" href="#contact" data-panel="contact">CONTACT</a>
         </nav>
+
+        <section class="music-player" aria-label="Music player">
+            <audio id="musicAudio" preload="metadata"></audio>
+            <div class="music-picker">
+                <button id="musicPickerBtn" class="music-picker-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                    <span aria-hidden="true">♫</span>
+                    <span id="musicPickerLabel">MUSIC OFF</span>
+                    <span aria-hidden="true">▼</span>
+                </button>
+                <div id="songList" class="song-list hidden" role="listbox" aria-label="Music selection"></div>
+            </div>
+            <p id="musicStatus" class="music-status hidden" aria-live="polite"></p>
+        </section>
 
         <section id="homePanel" class="landing-screen info-panel" data-panel-content="home">
             <div class="pixel-sparkles" aria-hidden="true">✦　｡　✦　｡　✦</div>
@@ -42,9 +56,9 @@
             <h1 class="panel-title">FAQ</h1>
             <div class="info-copy">
                 <h2>HOW DOES IT WORK?</h2>
-                <p>Pilih jumlah foto, tekan START PHOTO, lalu ikuti hitungan mundur untuk membuat kolase pixel-mu.</p>
+                <p>Choose the number of photos, press START PHOTO, and follow the countdown to create your pixel collage.</p>
                 <h2>WHY DOES THE CAMERA NOT OPEN?</h2>
-                <p>Izinkan akses kamera di browser dan buka website melalui localhost atau koneksi HTTPS.</p>
+                <p>Allow camera access in your browser and open the website through localhost or an HTTPS connection.</p>
             </div>
         </section>
 
@@ -52,8 +66,8 @@
             <p class="eyebrow">SYSTEM // DATA PROTOCOL</p>
             <h1 class="panel-title">PRIVACY POLICY</h1>
             <div class="info-copy">
-                <p>PIXEL CAPTURE memproses foto langsung di perangkatmu. Foto tidak dikirim ke server saat menggunakan mode kamera browser.</p>
-                <p>Kamu memegang kendali penuh atas hasil foto dan dapat menghapusnya dengan menutup halaman ini.</p>
+                <p>PIXEL CAPTURE processes photos directly on your device. Photos are not sent to a server when using browser camera mode.</p>
+                <p>You have full control over your photos and can remove them by closing this page.</p>
             </div>
         </section>
 
@@ -61,50 +75,89 @@
             <p class="eyebrow">COMMS // OPEN CHANNEL</p>
             <h1 class="panel-title">CONTACT</h1>
             <div class="info-copy">
-                <p>Punya ide frame baru atau menemukan bug di dunia 8-bit?</p>
+                <p>Have an idea for a new frame or found a bug in the 8-bit world?</p>
                 <p class="contact-line">EMAIL: <a href="mailto:mfadilfaiz17@gmail.com">mfadilfaiz17@gmail.com</a></p>
             </div>
         </section>
 
         <section id="boothApp" class="booth-app hidden">
-        <header>
+        <header id="boothHeader">
+            <div class="booth-actions">
+                <button id="backToHomeBtn" class="pixel-btn utility-btn" type="button">BACK</button>
+            </div>
             <h1 class="title">PIXEL CAPTURE</h1>
             <p>CAPTURE YOUR MOMENT IN 8-BIT</p>
         </header>
 
-        <section class="controls" aria-label="Pengaturan photobooth">
-            <label for="modeSelect">JUMLAH FOTO:</label>
-            <div class="mode-picker">
+        <section class="controls" aria-label="Photobooth controls">
+            <div class="control-group">
+                <div class="mode-picker">
                 <select id="modeSelect" class="mode-select-hidden" tabindex="-1" aria-hidden="true">
-                    <option value="4">4 FOTO</option>
-                    <option value="6">6 FOTO</option>
+                    <option value="4">4 PHOTOS</option>
+                    <option value="6">6 PHOTOS</option>
                 </select>
-                <button id="modePickerBtn" class="pixel-btn mode-picker-btn" type="button" aria-haspopup="listbox" aria-expanded="false">4 FOTO</button>
-                <div id="modeMenu" class="mode-menu hidden" role="listbox" aria-label="Jumlah foto">
-                    <button class="mode-option" type="button" role="option" data-value="4">4 FOTO</button>
-                    <button class="mode-option" type="button" role="option" data-value="6">6 FOTO</button>
+                <button id="modePickerBtn" class="pixel-btn mode-picker-btn" type="button" aria-haspopup="listbox" aria-controls="modeMenu" aria-expanded="false"><span class="dropdown-icon" aria-hidden="true">▼</span><span class="picker-label">4 PHOTOS</span></button>
+                <div id="modeMenu" class="mode-menu hidden" role="listbox" aria-label="Number of photos">
+                    <button class="mode-option" type="button" role="option" aria-selected="true" data-value="4">4 PHOTOS</button>
+                    <button class="mode-option" type="button" role="option" aria-selected="false" data-value="6">6 PHOTOS</button>
+                </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="mode-picker timer-picker">
+                    <select id="timerSelect" class="mode-select-hidden" tabindex="-1" aria-hidden="true">
+                        <option value="3">3 SEC</option>
+                        <option value="5">5 SEC</option>
+                        <option value="10">10 SEC</option>
+                    </select>
+                    <button id="timerPickerBtn" class="pixel-btn mode-picker-btn" type="button" aria-haspopup="listbox" aria-controls="timerMenu" aria-expanded="false"><span class="dropdown-icon" aria-hidden="true">▼</span><span class="picker-label">3 SEC</span></button>
+                    <div id="timerMenu" class="mode-menu hidden" role="listbox" aria-label="Timer">
+                        <button class="mode-option timer-option" type="button" role="option" aria-selected="true" data-value="3">3 SEC</button>
+                        <button class="mode-option timer-option" type="button" role="option" aria-selected="false" data-value="5">5 SEC</button>
+                        <button class="mode-option timer-option" type="button" role="option" aria-selected="false" data-value="10">10 SEC</button>
+                    </div>
                 </div>
             </div>
             <button id="startBtn" class="pixel-btn" type="button">START PHOTO</button>
         </section>
 
-        <section class="booth-monitor" aria-label="Monitor kamera">
-            <video id="videoFeed" autoplay muted playsinline aria-label="Live feed kamera"></video>
+        <section class="booth-monitor" aria-label="Camera monitor">
+            <video id="videoFeed" autoplay muted playsinline aria-label="Live camera feed"></video>
+            <img id="opencvFeed" class="hidden" alt="OpenCV live camera feed">
+            <p id="cameraHelp" class="camera-help">CAMERA ACCESS REQUIRES HTTPS OR LOCALHOST. ALLOW CAMERA PERMISSION WHEN PROMPTED.</p>
             <canvas id="captureCanvas" class="hidden" width="640" height="480"></canvas>
             <div id="countdown" class="hidden" aria-live="assertive"></div>
             <div id="flash" aria-hidden="true"></div>
         </section>
 
+        <section id="reviewContainer" class="hidden" aria-live="polite">
+            <p class="review-badge" id="reviewBadge">✓ PHOTOS CAPTURED</p>
+            <h2>REVIEW YOUR PHOTOS</h2>
+            <p class="review-help">Check every photo before choosing your 8-bit frame. Retake one photo or reset them all.</p>
+            <div id="reviewGrid" class="review-grid"></div>
+            <div class="review-actions">
+                <button id="retakeAllBtn" class="pixel-btn" type="button">RETAKE ALL</button>
+                <button id="continueToFramesBtn" class="pixel-btn continue-btn" type="button">CONTINUE TO FRAMES</button>
+            </div>
+        </section>
+
         <section id="resultContainer" class="hidden" aria-live="polite">
             <h2>PHOTO COLLAGE READY!</h2>
-            <img id="resultImage" src="" alt="Hasil kolase foto">
-            <div class="frame-controls">
-                <p class="frame-label">FRAME DARI FOLDER FRAMES</p>
-                <div id="folderFrames" class="template-grid" role="group" aria-label="Frame dari folder"></div>
-                <label class="upload-frame" for="customFrameInput">UPLOAD FRAME CUSTOM</label>
-                <input id="customFrameInput" type="file" accept="image/png,image/jpeg,image/jfif,image/webp">
-                <img id="framePreview" class="frame-preview hidden" alt="Preview frame custom">
-                <button id="applyFrameBtn" class="pixel-btn" type="button">PAKAI FRAME CUSTOM</button>
+            <div class="result-layout">
+                <img id="resultImage" src="" alt="Photo collage result">
+                <div class="frame-controls">
+                    <div class="frame-picker">
+                        <div id="frameMenu" class="frame-menu" role="region" aria-label="Choose a photo frame">
+                            <h3 id="framePickerLabel" class="frame-picker-title">CHOOSE FRAME</h3>
+                            <p class="frame-label">FRAMES FROM FRAME FOLDER</p>
+                            <div id="folderFrames" class="template-grid" role="group" aria-label="Frames from folder"></div>
+                            <label class="upload-frame" for="customFrameInput">UPLOAD CUSTOM FRAME</label>
+                            <input id="customFrameInput" type="file" accept="image/png,image/jpeg,image/jfif,image/webp">
+                            <img id="framePreview" class="frame-preview hidden" alt="Preview frame custom">
+                            <button id="applyFrameBtn" class="pixel-btn" type="button">APPLY CUSTOM FRAME</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div>
                 <a id="downloadBtn" class="pixel-btn" href="#" download="pixel-photobooth.jpg">DOWNLOAD</a>
@@ -115,6 +168,10 @@
         <p id="statusText" aria-live="polite">TAKE YOUR MOMENT! 0__0</p>
         </section>
     </main>
+
+    <noscript>
+        <p class="noscript-message">PIXEL CAPTURE NEEDS JAVASCRIPT ENABLED TO USE THE CAMERA AND CREATE PHOTOS.</p>
+    </noscript>
 
     <script src="diy_photoboth/static/script.js"></script>
 </body>

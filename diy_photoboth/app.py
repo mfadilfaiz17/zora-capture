@@ -1,7 +1,9 @@
 from flask import Flask, render_template, Response, jsonify, send_from_directory, url_for
+import base64
 import cv2
 import os
 import time
+import threading
 from PIL import Image, ImageOps
 
 app = Flask(__name__, template_folder='..')
@@ -12,23 +14,39 @@ frames_directory = os.path.join(app.root_path, 'frames')
 os.makedirs(os.path.join(static_directory, 'results'), exist_ok=True)
 os.makedirs(frames_directory, exist_ok=True)
 
-camera = cv2.VideoCapture(0)
+camera = None
+camera_lock = threading.Lock()
 latest_frame = None
 captured_images = []
 
+def get_camera():
+    global camera
+    with camera_lock:
+        if camera is None or not camera.isOpened():
+            backend = cv2.CAP_DSHOW if os.name == 'nt' else cv2.CAP_ANY
+            camera = cv2.VideoCapture(0, backend)
+            if not camera.isOpened():
+                camera.release()
+                camera = None
+                raise RuntimeError("OpenCV could not open the camera.")
+        return camera
+
 def generate_frames():
     global latest_frame
+    active_camera = get_camera()
     while True:
-        success, frame = camera.read()
+        success, frame = active_camera.read()
         if not success:
-            break
-        else:
-            frame = cv2.flip(frame, 1)
-            latest_frame = frame.copy()
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame_bytes = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+            time.sleep(0.05)
+            continue
+        frame = cv2.flip(frame, 1)
+        latest_frame = frame.copy()
+        ret, buffer = cv2.imencode('.jpg', frame)
+        if not ret:
+            continue
+        frame_bytes = buffer.tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
 @app.route('/')
 def index():
@@ -51,10 +69,31 @@ def video_feed():
 @app.route('/capture', methods=['POST'])
 def capture():
     global latest_frame, captured_images
+    get_camera()
     if latest_frame is not None:
         captured_images.append(latest_frame.copy())
         return jsonify({"status": "success", "count": len(captured_images)})
     return jsonify({"status": "error", "message": "No frame available"}), 400
+
+@app.route('/captured-preview')
+def captured_preview():
+    previews = []
+    for image in captured_images:
+        success, buffer = cv2.imencode('.jpg', image)
+        if success:
+            previews.append(f"data:image/jpeg;base64,{base64.b64encode(buffer).decode('ascii')}")
+    return jsonify({"frames": previews})
+
+@app.route('/retake/<int:index>', methods=['POST'])
+def retake(index):
+    global latest_frame, captured_images
+    get_camera()
+    if index < 0 or index >= len(captured_images):
+        return jsonify({"status": "error", "message": "The selected photo does not exist."}), 400
+    if latest_frame is None:
+        return jsonify({"status": "error", "message": "No frame available"}), 400
+    captured_images[index] = latest_frame.copy()
+    return jsonify({"status": "success"})
 
 @app.route('/reset', methods=['POST'])
 def reset():
@@ -92,7 +131,7 @@ def frame_file(filename):
 def generate(mode):
     global captured_images
     if len(captured_images) != int(mode):
-        return jsonify({"status": "error", "message": "Jumlah foto tidak sesuai!"}), 400
+        return jsonify({"status": "error", "message": "The number of photos does not match."}), 400
 
     # Convert BGR (OpenCV) to RGB (Pillow)
     pil_images = [

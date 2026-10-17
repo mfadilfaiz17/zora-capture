@@ -17,5 +17,10 @@
             "url": "diy_photoboth/frames/HTTYDragonFrame.png"
         }
     ],
-    "6": []
+    "6": [
+        {
+            "name": "SpiderFrame2.png",
+            "url": "diy_photoboth/frames/SpiderFrame2.png"
+        }
+    ]
 }

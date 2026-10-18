@@ -536,6 +536,7 @@ enterBoothBtn.addEventListener('click', async () => {
     infoPanels.forEach(panel => panel.classList.add('hidden'));
     document.querySelector('.site-nav').classList.add('hidden');
     boothApp.classList.remove('hidden');
+    backToHomeBtn.classList.remove('hidden');
     navLinks.forEach(link => link.classList.remove('active'));
     try {
         if (!cameraStream) {
@@ -550,6 +551,7 @@ backToHomeBtn.addEventListener('click', () => {
     if (isCapturing) {
         return;
     }
+    backToHomeBtn.classList.add('hidden');
     stopCamera();
     retakeIndex = null;
     startBtn.innerText = 'START PHOTO';
@@ -575,6 +577,7 @@ startBtn.addEventListener('click', async () => {
     const timer = parseInt(timerSelect.value);
     const selectedRetakeIndex = retakeIndex;
     isCapturing = true;
+    backToHomeBtn.classList.add('hidden');
     startBtn.disabled = true;
     setModeDisabled(true);
 
@@ -652,6 +655,7 @@ retakeBtn.addEventListener('click', async () => {
     framePickerLabel.innerText = 'CHOOSE FRAME';
     retakeIndex = null;
     startBtn.innerText = 'START PHOTO';
+    backToHomeBtn.classList.remove('hidden');
     controls.classList.remove('hidden');
     resultContainer.classList.add('hidden');
     reviewContainer.classList.add('hidden');
@@ -671,6 +675,7 @@ retakeAllBtn.addEventListener('click', async () => {
     }
     retakeIndex = null;
     startBtn.innerText = 'START PHOTO';
+    backToHomeBtn.classList.remove('hidden');
     reviewContainer.classList.add('hidden');
     boothApp.classList.remove('review-active');
     controls.classList.remove('hidden');

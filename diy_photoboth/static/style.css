@@ -34,6 +34,8 @@ body {
 }
 
 .pixel-container {
+    position: relative;
+    z-index: 0;
     width: 100%;
     min-height: 100vh;
     margin: 0;
@@ -44,15 +46,46 @@ body {
     box-shadow: 10px 10px 0px #000;
 }
 
+.site-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    min-height: 96px;
+    border-bottom: 4px solid #555;
+    padding-bottom: 16px;
+}
+
+.site-logo {
+    flex: 0 0 clamp(108px, 14vw, 168px);
+    display: block;
+    width: clamp(108px, 14vw, 168px);
+    line-height: 0;
+}
+
+.site-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+.site-logo:focus-visible {
+    outline: 4px solid #ffcc00;
+    outline-offset: 5px;
+}
+
 .site-nav {
+    flex: 1 1 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px 18px;
-    width: 100%;
-    margin: 0 auto 34px;
-    border-bottom: 4px solid #555;
-    padding-bottom: 16px;
+    width: auto;
+    margin: 0;
 }
 
 .nav-link {
@@ -70,10 +103,11 @@ body {
 
 .music-player {
     position: relative;
+    flex: 0 0 auto;
     display: flex;
     justify-content: flex-end;
-    width: 100%;
-    margin: -12px 0 10px;
+    width: auto;
+    margin: 0;
 }
 
 .music-picker {
@@ -154,9 +188,14 @@ body {
     overflow: hidden;
 }
 
-.landing-screen::before,
-.landing-screen::after {
-    content: '';
+.decorations {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.decoration-box {
     position: absolute;
     width: 90px;
     height: 90px;
@@ -165,8 +204,8 @@ body {
     animation: pixelFloat 3s steps(4, end) infinite;
 }
 
-.landing-screen::before { top: 12%; left: 8%; }
-.landing-screen::after { right: 8%; bottom: 18%; border-color: #ff00aa; animation-delay: -1.5s; }
+.decoration-box-green { top: 180px; left: 8%; }
+.decoration-box-purple { right: 8%; bottom: 18%; border-color: #ff00aa; animation-delay: -1.5s; }
 
 .pixel-sparkles {
     color: #ffcc00;
@@ -185,6 +224,12 @@ body {
 .eyebrow { color: #00ff00; margin: 18px 0; }
 
 .landing-header { animation: landingIn 0.8s steps(5, end) both; }
+.hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
 .landing-header .title { font-size: clamp(24px, 6vw, 42px); margin: 12px 0 18px; }
 .landing-header > p:not(.pixel-camera) { color: #ffcc00; font-size: clamp(10px, 1.2vw, 14px); }
 .pixel-camera { font-size: 46px; color: #ff00aa; margin: 0; text-shadow: 5px 5px 0 #000; }
@@ -193,7 +238,7 @@ body {
     border: 4px solid #fff;
     background: #185abd;
     padding: 16px 26px;
-    margin: 28px 0 20px;
+    margin: 20px 0 0;
     box-shadow: 7px 7px 0 #000;
     line-height: 1.8;
     animation: landingIn 0.8s steps(5, end) 0.25s both;
@@ -723,10 +768,24 @@ body[data-mode="static"] #videoFeed {
         box-shadow: none;
     }
 
+    .site-header {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        min-height: 0;
+        padding-bottom: 12px;
+    }
+
+    .site-logo {
+        flex: 0 0 clamp(82px, 24vw, 124px);
+        width: clamp(82px, 24vw, 124px);
+    }
+
     .site-nav {
+        order: 3;
+        flex-basis: 100%;
         gap: 5px 8px;
         margin-bottom: 18px;
-        padding-bottom: 12px;
     }
     .nav-link { font-size: 8px; }
     .music-player { margin: -4px 0 10px; }
@@ -735,8 +794,7 @@ body[data-mode="static"] #videoFeed {
     .song-option { font-size: 7px; padding: 8px 6px; }
     .landing-screen, .info-panel { min-height: calc(100vh - 105px); }
     .landing-screen { padding: 10px 0; }
-    .landing-screen::before,
-    .landing-screen::after { width: 52px; height: 52px; border-width: 4px; }
+    .decoration-box { width: 52px; height: 52px; border-width: 4px; }
     .pixel-sparkles { font-size: 13px; }
     .eyebrow, .landing-hint, .card-label { font-size: 8px; }
     .landing-header .title { font-size: clamp(20px, 8vw, 32px); }

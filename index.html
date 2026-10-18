@@ -12,27 +12,36 @@
 </head>
 <body data-mode="static">
     <a class="skip-link" href="#main-content">SKIP TO MAIN CONTENT</a>
-    <main id="main-content" class="pixel-container">
-        <nav class="site-nav" aria-label="Main navigation">
-            <a class="nav-link active" href="#home" data-panel="home">HOME</a>
-            <a class="nav-link" href="#faq" data-panel="faq">FAQ</a>
-            <a class="nav-link" href="#privacy" data-panel="privacy">PRIVACY POLICY</a>
-            <a class="nav-link" href="#contact" data-panel="contact">CONTACT</a>
-        </nav>
+    <div class="pixel-container">
+        <div class="decorations" aria-hidden="true">
+            <span class="decoration-box decoration-box-green"></span>
+            <span class="decoration-box decoration-box-purple"></span>
+        </div>
+        <header class="site-header">
+            <a class="site-logo" href="#home" aria-label="PIXEL CAPTURE home">
+                <img src="diy_photoboth/static/logo.png" alt="ZORA CAPTURE">
+            </a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a class="nav-link active" href="#home" data-panel="home">HOME</a>
+                <a class="nav-link" href="#faq" data-panel="faq">FAQ</a>
+                <a class="nav-link" href="#privacy" data-panel="privacy">PRIVACY POLICY</a>
+                <a class="nav-link" href="#contact" data-panel="contact">CONTACT</a>
+            </nav>
+            <section class="music-player" aria-label="Music player">
+                <audio id="musicAudio" preload="metadata"></audio>
+                <div class="music-picker">
+                    <button id="musicPickerBtn" class="music-picker-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span aria-hidden="true">♫</span>
+                        <span id="musicPickerLabel">MUSIC OFF</span>
+                        <span aria-hidden="true">▼</span>
+                    </button>
+                    <div id="songList" class="song-list hidden" role="listbox" aria-label="Music selection"></div>
+                </div>
+                <p id="musicStatus" class="music-status hidden" aria-live="polite"></p>
+            </section>
+        </header>
 
-        <section class="music-player" aria-label="Music player">
-            <audio id="musicAudio" preload="metadata"></audio>
-            <div class="music-picker">
-                <button id="musicPickerBtn" class="music-picker-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-                    <span aria-hidden="true">♫</span>
-                    <span id="musicPickerLabel">MUSIC OFF</span>
-                    <span aria-hidden="true">▼</span>
-                </button>
-                <div id="songList" class="song-list hidden" role="listbox" aria-label="Music selection"></div>
-            </div>
-            <p id="musicStatus" class="music-status hidden" aria-live="polite"></p>
-        </section>
-
+        <main id="main-content">
         <section id="homePanel" class="landing-screen info-panel" data-panel-content="home">
             <div class="pixel-sparkles" aria-hidden="true">✦　｡　✦　｡　✦</div>
             <p class="eyebrow">EST. 198X // INSERT COIN</p>
@@ -41,14 +50,16 @@
                 <h1 class="title">PIXEL CAPTURE</h1>
                 <p class="landing-tagline">YOUR MOMENT, OUR 8-BIT MAGIC</p>
             </header>
-            <div class="landing-card">
-                <span class="card-label">READY PLAYER ONE?</span>
-                <p>MAKE A MEMORY.<br>FRAME IT FOREVER.</p>
+            <div class="hero-actions">
+                <div class="landing-card">
+                    <span class="card-label">READY PLAYER ONE?</span>
+                    <p>MAKE A MEMORY.<br>FRAME IT FOREVER.</p>
+                </div>
+                <button id="enterBoothBtn" class="pixel-btn start-landing-btn" type="button">
+                    <span aria-hidden="true">▶</span> START
+                </button>
+                <p class="landing-hint">PRESS START TO ENTER THE PHOTO BOOTH</p>
             </div>
-            <button id="enterBoothBtn" class="pixel-btn start-landing-btn" type="button">
-                <span aria-hidden="true">▶</span> START
-            </button>
-            <p class="landing-hint">PRESS START TO ENTER THE PHOTO BOOTH</p>
         </section>
 
         <section class="info-panel hidden" data-panel-content="faq">
@@ -167,7 +178,8 @@
 
         <p id="statusText" aria-live="polite">TAKE YOUR MOMENT! 0__0</p>
         </section>
-    </main>
+        </main>
+    </div>
 
     <noscript>
         <p class="noscript-message">PIXEL CAPTURE NEEDS JAVASCRIPT ENABLED TO USE THE CAMERA AND CREATE PHOTOS.</p>

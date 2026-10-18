@@ -35,6 +35,8 @@ const enterBoothBtn = document.getElementById('enterBoothBtn');
 const backToHomeBtn = document.getElementById('backToHomeBtn');
 const boothApp = document.getElementById('boothApp');
 const navLinks = document.querySelectorAll('.nav-link');
+const navToggle = document.getElementById('navToggle');
+const siteNav = document.getElementById('siteNav');
 const infoPanels = document.querySelectorAll('[data-panel-content]');
 const musicAudio = document.getElementById('musicAudio');
 const musicPicker = document.querySelector('.music-picker');
@@ -532,7 +534,9 @@ function showPanel(panelName) {
     infoPanels.forEach(panel => {
         panel.classList.toggle('hidden', panel.dataset.panelContent !== panelName);
     });
-    document.querySelector('.site-nav').classList.remove('hidden');
+    siteNav.classList.remove('hidden');
+    siteNav.classList.remove('mobile-open');
+    navToggle.setAttribute('aria-expanded', 'false');
     navLinks.forEach(link => {
         link.classList.toggle('active', link.dataset.panel === panelName);
     });
@@ -547,9 +551,16 @@ navLinks.forEach(link => {
     });
 });
 
+navToggle.addEventListener('click', () => {
+    const isOpen = siteNav.classList.toggle('mobile-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+});
+
 enterBoothBtn.addEventListener('click', async () => {
     infoPanels.forEach(panel => panel.classList.add('hidden'));
-    document.querySelector('.site-nav').classList.add('hidden');
+    siteNav.classList.add('hidden');
+    siteNav.classList.remove('mobile-open');
+    navToggle.setAttribute('aria-expanded', 'false');
     boothApp.classList.remove('hidden');
     backToHomeBtn.classList.remove('hidden');
     navLinks.forEach(link => link.classList.remove('active'));
@@ -576,7 +587,7 @@ backToHomeBtn.addEventListener('click', () => {
     controls.classList.remove('hidden');
     boothMonitor.classList.remove('hidden');
     boothApp.classList.add('hidden');
-    document.querySelector('.site-nav').classList.remove('hidden');
+    siteNav.classList.remove('hidden');
     showPanel('home');
     window.history.replaceState(null, '', '#home');
     statusText.innerText = 'TAKE YOUR MOMENT! 0__0';

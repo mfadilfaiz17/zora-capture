@@ -21,6 +21,18 @@
         {
             "name": "SpiderFrame2.png",
             "url": "diy_photoboth/frames/SpiderFrame2.png"
+        },
+        {
+            "name": "NailongFrame.png",
+            "url": "diy_photoboth/frames/NailongFrame.png"
+        },
+        {
+            "name": "LupyFrame2.png",
+            "url": "diy_photoboth/frames/LupyFrame2.png"
+        },
+        {
+            "name": "HTTYDragonFrame.png",
+            "url": "diy_photoboth/frames/HTTYDragonFrame.png"
         }
     ]
 }

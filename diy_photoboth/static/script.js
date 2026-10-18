@@ -62,6 +62,7 @@ let collageImageUrl = '';
 let customFrameUrl = '';
 let isCapturing = false;
 let musicIsOff = true;
+let musicAutoplayPending = true;
 let retakeIndex = null;
 
 function updateSongButtons() {
@@ -105,9 +106,10 @@ function selectSong(index, shouldPlay = false) {
 async function playSelectedSong() {
     try {
         await musicAudio.play();
+        musicAutoplayPending = false;
         musicStatus.innerText = `${songs[currentSongIndex].title} // PLAYING`;
     } catch (error) {
-        musicStatus.innerText = 'ERROR: ADD THE SONG FILE OR CHECK BROWSER AUDIO PERMISSION.';
+        musicStatus.innerText = `${songs[currentSongIndex].title} // CLICK TO PLAY`;
     }
 }
 
@@ -116,6 +118,7 @@ function turnMusicOff() {
     musicAudio.removeAttribute('src');
     musicAudio.load();
     musicIsOff = true;
+    musicAutoplayPending = false;
     musicPickerLabel.innerText = 'MUSIC OFF';
     musicStatus.innerText = 'MUSIC OFF';
     offButton.setAttribute('aria-selected', 'true');
@@ -142,6 +145,7 @@ songs.forEach((song, index) => {
     button.dataset.songIndex = String(index);
     button.innerText = `${index + 1}. ${song.title}`;
     button.addEventListener('click', () => {
+        musicAutoplayPending = false;
         selectSong(index, true);
         closeMenu(musicPickerBtn, songList, true);
     });
@@ -163,6 +167,17 @@ musicAudio.addEventListener('ended', () => {
     const nextSong = (currentSongIndex + 1) % songs.length;
     selectSong(nextSong, true);
 });
+
+function resumeDefaultMusic() {
+    if (musicAutoplayPending && !musicIsOff && musicAudio.paused) {
+        playSelectedSong();
+    }
+}
+
+selectSong(0);
+playSelectedSong();
+window.addEventListener('pointerdown', resumeDefaultMusic);
+window.addEventListener('keydown', resumeDefaultMusic);
 
 async function loadFolderFrames(mode) {
     folderFrames.innerHTML = '';

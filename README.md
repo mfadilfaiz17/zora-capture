@@ -1,12 +1,12 @@
-# PIXEL CAPTURE
+# ZORA CAPTURE
 
-PIXEL CAPTURE adalah web photobooth berbahasa Inggris dengan tema 8-bit. Pengguna dapat memilih empat atau enam foto, memilih timer, mengambil gambar, meninjau dan mengulang foto tertentu, memilih frame, lalu mengunduh collage akhir.
+ZORA CAPTURE adalah web photobooth dengan tema web 8-bit. Pengguna dapat memilih empat atau enam foto, memilih timer, mengambil gambar, meninjau dan mengulang foto tertentu, memilih frame, lalu mengunduh collage akhir.
 
 ## Fitur
 
 - Tema visual pixel/arcade yang responsif untuk desktop dan mobile.
 - Landing page dengan panel Home, FAQ, Privacy Policy, dan Contact.
-- Music picker dengan tiga lagu dan opsi `MUSIC OFF`.
+- Music picker dengan tiga pilihan lagu.
 - Mode pengambilan empat dan enam foto.
 - Countdown 3, 5, dan 10 detik.
 - Halaman review dengan retake satu foto atau semua foto.
@@ -157,5 +157,3 @@ Sebelum mempublikasikan perubahan:
 5. Uji retake satu foto dan `RETAKE ALL`.
 6. Uji music picker dan `MUSIC OFF`.
 7. Uji layout pada desktop dan layar mobile yang sempit.
-
-Lihat [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) untuk aturan UI, [ARCHITECTURE.md](./ARCHITECTURE.md) untuk detail runtime, dan [TODO.md](./TODO.md) untuk roadmap refactoring.

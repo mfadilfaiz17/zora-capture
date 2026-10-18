@@ -21,7 +21,14 @@
             <a class="site-logo" href="#home" aria-label="PIXEL CAPTURE home">
                 <img src="diy_photoboth/static/logo.png" alt="ZORA CAPTURE">
             </a>
-            <nav class="site-nav" aria-label="Main navigation">
+            <button id="navToggle" class="nav-toggle" type="button"
+                    aria-expanded="false" aria-controls="siteNav">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span class="sr-only">OPEN MENU</span>
+            </button>
+            <nav id="siteNav" class="site-nav" aria-label="Main navigation">
                 <a class="nav-link active" href="#home" data-panel="home">HOME</a>
                 <a class="nav-link" href="#faq" data-panel="faq">FAQ</a>
                 <a class="nav-link" href="#privacy" data-panel="privacy">PRIVACY POLICY</a>
